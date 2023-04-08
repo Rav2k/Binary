@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include "node.h"
+#include <random>
 
 using namespace std;
 
@@ -16,9 +17,10 @@ node *root = NULL;
 int main(){
   char userInput[20];
   bool loop = false;
+  
   do{
 
-    cout<<"type 'gen' to generate numbers from a file"<<endl;
+    cout<<"type 'gen' to generate 10 numbers from a file"<<endl;
     cin>>userInput;
     cin.get();
     if(strcmp(userInput, "gen") == 0){
@@ -32,6 +34,7 @@ int main(){
 
   }while(!loop);
 
+  cout<<"Printing..."<<endl;
   print(root, 0);
 
   cout<<"to add type 'add'"<<endl;
@@ -42,23 +45,32 @@ int main(){
 
   char user[20];
   int userNum = 0;
-  
+
   do{
+    cout<<"to add type 'add'"<<endl;
+  cout<<"to search type 'search'"<<endl;
+  cout<<"to remove type 'del'"<<endl;
+  cout<<"to print type 'print'"<<endl;
+  cout<<"to quit type 'quit'"<<endl;
+    cout<<endl;
+    cout<<"What do you want to do?: "<<endl;
+    cin.get(user, 20);
+    cin.get();
     if(strcmp(user, "add") == 0){
       cout<<"Enter the number: "<<endl;
       cin>>userNum;
       cin.get();
       insert(root, userNum);
-      cout<<"NUmber has been successfully added!"<<endl;
+      cout<<"Number has been successfully added!"<<endl;
     }
 
-    else if(strcmp(user, "search")){
+    else if(strcmp(user, "search")==0){
       cout<<"Enter the number you want to search for: "<<endl;
       cin>>userNum;
       cin.get();
       search(root, userNum);
       cout<<endl;
-      cout<<"Search complete..."<<endl;
+           cout<<"Search complete..."<<endl;
     }
     else if(strcmp(user, "del")==0){
       cout<<"Enter the number doomed to be deleted: "<<endl;
@@ -73,7 +85,7 @@ int main(){
       print(root, 0);
     }
     else{
-      cout<<"type something valid?"<<endl;
+      cout<<"type something valid"<<endl;
     }
   }while(strcmp(user, "quit")!=0);
 
@@ -107,7 +119,6 @@ int main(){
 
 //Asked noam for how he did his and used the approach he used.
 void fileGeneration(){//taking the numbers from the text file and making the base tree
-
   ifstream numbers("numbers2.txt");
   srand(time(NULL));
   int num = 0;
@@ -116,20 +127,20 @@ void fileGeneration(){//taking the numbers from the text file and making the bas
     numbers >> num;
     nums.push_back(num);
   }
-  int randIndex = 0;
-  int count = 0;
-  while (count != 10) {
-    randIndex = (rand() % 999) + 1;
-    num = nums.at(randIndex);
+  int randomIndex = 0;
+  int counter = 0;
+  while (counter != 10) {
+    randomIndex = (rand() % nums.size()) + 1;
+    num = nums.at(randomIndex);
     cout << num << " ";
     insert(root, num);
-    count++;
+    counter++;
   }
+  cout<<"Finished"<<endl;
 }
 
 void print(node *cur2, int layers){
   if(cur2 == NULL){
-    cout<<"Nothing!"<<endl;
     return;
   }
   print(cur2->right, layers+1);//right side printing 
